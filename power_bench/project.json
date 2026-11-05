@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "name": "Power bench",
+  "pages": [
+    {
+      "title": "Overview",
+      "file": "power_bench.ipynb",
+      "index": true
+    }
+  ],
+  "explore": []
+}

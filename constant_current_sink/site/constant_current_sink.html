@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.20">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>CONSTANT CURRENT LOAD – Constant current sink</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-17888a1159294d3eb470f19f6f52f5a5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-fb558fb870390eca550d5c231f2e7b61.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../../css/quarto-override.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./constant_current_sink.html">Overview</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Contents</a> 
+        <div class="sidebar-tools-main">
+    <div id="quarto-search" class="quarto-navigation-tool px-1" title="Search"></div>
+</div>
+    </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./constant_current_sink.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Explore</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./../../../../explore?project=constant_current_sink&amp;xoctave=explore%2F01_N-MOSFET.ipynb&amp;circuit=explore%2F01_N-MOSFET.xml" class="sidebar-item-text sidebar-link" target="_top">
+ <span class="menu-text">N-MOSFET</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./../../../../explore?project=constant_current_sink&amp;xoctave=explore%2F02_voltage_divider.ipynb&amp;circuit=explore%2F02_voltage_divider.xml" class="sidebar-item-text sidebar-link" target="_top">
+ <span class="menu-text">Voltage divider</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./../../../../explore?project=constant_current_sink&amp;xoctave=explore%2F03_power_dissipation.ipynb&amp;circuit=explore%2F03_power_dissipation.xml" class="sidebar-item-text sidebar-link" target="_top">
+ <span class="menu-text">Power dissipation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./../../../../explore?project=constant_current_sink&amp;xoctave=explore%2F04_soft_latching_switch.ipynb&amp;circuit=explore%2F04_soft_latching_switch.xml" class="sidebar-item-text sidebar-link" target="_top">
+ <span class="menu-text">Soft latching switch</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./../../../../explore?project=constant_current_sink&amp;xoctave=explore%2F05_constant_current.ipynb&amp;circuit=explore%2F05_constant_current.xml" class="sidebar-item-text sidebar-link" target="_top">
+ <span class="menu-text">Constant current</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basic-assumptions" id="toc-basic-assumptions" class="nav-link active" data-scroll-target="#basic-assumptions">BASIC ASSUMPTIONS</a></li>
+  <li><a href="#thermal-dissipation" id="toc-thermal-dissipation" class="nav-link" data-scroll-target="#thermal-dissipation">THERMAL DISSIPATION</a></li>
+  <li><a href="#current-sense" id="toc-current-sense" class="nav-link" data-scroll-target="#current-sense">CURRENT SENSE</a></li>
+  <li><a href="#mosfet-gate-currents" id="toc-mosfet-gate-currents" class="nav-link" data-scroll-target="#mosfet-gate-currents">MOSFET GATE CURRENTS</a></li>
+  <li><a href="#reference-voltage-set" id="toc-reference-voltage-set" class="nav-link" data-scroll-target="#reference-voltage-set">reference voltage set</a></li>
+  <li><a href="#soft-latching-circuits" id="toc-soft-latching-circuits" class="nav-link" data-scroll-target="#soft-latching-circuits">soft latching circuits</a></li>
+  <li><a href="#capacitor" id="toc-capacitor" class="nav-link" data-scroll-target="#capacitor">capacitor</a>
+  <ul>
+  <li><a href="#capacitor-in-series" id="toc-capacitor-in-series" class="nav-link" data-scroll-target="#capacitor-in-series">capacitor in series</a></li>
+  <li><a href="#capacitor-charging" id="toc-capacitor-charging" class="nav-link" data-scroll-target="#capacitor-charging">capacitor charging</a></li>
+  <li><a href="#basic-assumptions-1" id="toc-basic-assumptions-1" class="nav-link" data-scroll-target="#basic-assumptions-1">BASIC ASSUMPTIONS</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">CONSTANT CURRENT LOAD</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>using N-MOSFET set up gate voltage to setup current through MOSFET (see <span class="math inline">\(I_d\)</span> vs <span class="math inline">\(V_{gs}\)</span>). The <span class="math inline">\(V_g\)</span> is driven by OpAmp based on <span class="math inline">\(V_s\)</span> through power resistor (shunt) voltage and reference voltage <span class="math inline">\(V_{ref}\)</span>.</p>
+<p><img src="./falstad/basic_concept.svg" class="img-fluid"></p>
+<section id="basic-assumptions" class="level2">
+<h2 class="anchored" data-anchor-id="basic-assumptions">BASIC ASSUMPTIONS</h2>
+<p>It is impossible? to have one MOSFET going full up to 3.5A and in the same time stay precise in low range of curents. - modular approach: 4 modules - three IXTP4N65X2 MOSFETS for 0.4A to 1A - one precise STF2N95K5 for 0 to 0.5A - maximum total <span class="math inline">\(V_{in}\)</span>=24V and <span class="math inline">\(I_{in}\)</span>=3.5A - minimum <span class="math inline">\(V_{in}\)</span>=1V and <span class="math inline">\(I_{in}\)</span>=0.10mA - <span class="math inline">\(V_{ref}\)</span> will be set with potentiometer, each mosfet separately - can be one common display - interface for current sensing on low side - device power from external supply: main 220V AC</p>
+</section>
+<section id="thermal-dissipation" class="level2">
+<h2 class="anchored" data-anchor-id="thermal-dissipation">THERMAL DISSIPATION</h2>
+<p>xsd1226-005</p>
+<p><img src="./img/xsd1226-005.png" class="img-fluid"></p>
+<div id="82291c03-3876-4397-b755-83f65388db79" class="cell" data-execution_count="16">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>displayformat include_comment <span class="fu">true</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>displayformat matrix <span class="fu">text</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg</span> <span class="bu">load</span> symbolic</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">warning</span>(<span class="st">'off'</span><span class="op">,</span> <span class="st">'all'</span>)<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># THERMAL RESISTANCE</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># POWER MOSFET</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># SPP02N60C3-VB</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># input</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>V_in<span class="op">=</span><span class="fl">24</span> <span class="co"># [V]</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>I_in<span class="op">=</span><span class="fl">1</span> <span class="co">#[A]</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># total power to dissipate</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>P_tot <span class="op">=</span> V_in<span class="op">*</span>I_in <span class="co">#[W]</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># heat sink XSD1226-039</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># estimated, based on `same-sky` datasheet</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># at 75degC for aluminum</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. natural convection</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. at 200LFM</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. at 400LFM</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>K<span class="op">=</span>[<span class="fl">1000</span> <span class="fl">400</span> <span class="fl">250</span>]     <span class="co">#[degC * cm^2 / W]</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>A<span class="op">=</span><span class="fl">94.61</span> <span class="co">#[cm^2]</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>Rths<span class="op">=</span> K<span class="op">/</span>A <span class="co">#[degC/W] sink to ambient</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># TO-220 package</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>Rthj<span class="op">=</span><span class="fl">1.56</span> <span class="co">#[degC/W] junction to case</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># total thermal resistance</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>Rth <span class="op">=</span>Rthj<span class="op">+</span>Rths</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># max temp raise above ambient</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> Rth<span class="op">*</span>P_tot <span class="co">#[degC] </span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># max junction temperature</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>Tj<span class="op">=</span><span class="fl">150</span> <span class="co">#[degC]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># THERMAL RESISTANCE
+
+# POWER MOSFET
+# SPP02N60C3-VB
+
+# input</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>V_in = 24 # [V]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>I_in = 1 #[A]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+# total power to dissipate</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>P_tot = 24 #[W]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+# heat sink XSD1226-039
+# estimated, based on `same-sky` datasheet
+# at 75degC for aluminum
+# 1. natural convection
+# 2. at 200LFM
+# 3. at 400LFM</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>K =    1000    400    250     #[degC * cm^2 / W]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>A = 94.610 #[cm^2]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rths =    10.5697    4.2279    2.6424 #[degC/W] sink to ambient</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+# TO-220 package</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rthj = 1.5600 #[degC/W] junction to case</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+# total thermal resistance</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rth =    12.1297    5.7879    4.2024</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+# max temp raise above ambient</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>T =    291.11   138.91   100.86 #[degC] </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+# max junction temperature</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Tj = 150 #[degC]</code></pre>
+</div>
+</div>
+<div id="8ced99c5-30fe-4d8d-9c13-7f4a65cceda4" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">graphics_toolkit</span> plotly</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>displayformat plotly_interactive_legend <span class="fu">true</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Px<span class="op">=</span><span class="fu">linspace</span>(<span class="fl">0</span><span class="op">,</span>P_tot)<span class="op">;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Px<span class="op">,</span>Px<span class="op">*</span>Rth(<span class="fl">1</span>)<span class="op">,</span><span class="st">";nat.conv.;"</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hold</span> on</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Px<span class="op">,</span>Px<span class="op">*</span>Rth(<span class="fl">2</span>)<span class="op">,</span><span class="st">";200LFM;"</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Px<span class="op">,</span>Px<span class="op">*</span>Rth(<span class="fl">3</span>)<span class="op">,</span><span class="st">";400LFM;"</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">xlabel</span>(<span class="st">"power [W]"</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ylabel</span>(<span class="st">"temp [degC]"</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ylim</span>([<span class="fl">0</span><span class="op">,</span>Tj])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="constant_current_sink_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="abd233ca-3b13-4fba-a06a-5d543120f0e8" class="cell" data-execution_count="18">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#power on resistor</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Rsense<span class="op">=</span><span class="fl">5e-3</span> <span class="co">#[ohm]</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>P_r <span class="op">=</span> Rsense <span class="op">*</span> I_in<span class="op">^</span><span class="fl">2</span> <span class="op">*</span><span class="fl">1e3</span> <span class="co">#[mW]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#power on resistor</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rsense = 5.0000e-03 #[ohm]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>P_r = 5 #[mW]</code></pre>
+</div>
+</div>
+</section>
+<section id="current-sense" class="level2">
+<h2 class="anchored" data-anchor-id="current-sense">CURRENT SENSE</h2>
+<div id="9bf268d9-7f4b-47f3-9936-5bea514f5dd9" class="cell" data-execution_count="19">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Rsense <span class="co">#[mOhm] shunt resistor</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>Vsense<span class="op">=</span>I_in<span class="op">*</span>Rsense</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>OpAmp_gain <span class="op">=</span> <span class="fl">20</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>V_measure <span class="op">=</span> OpAmp_gain<span class="op">*</span>Vsense</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>Rsense = 5.0000e-03 #[mOhm] shunt resistor</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Vsense = 5.0000e-03</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>OpAmp_gain = 20</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>V_measure = 0.1000</code></pre>
+</div>
+</div>
+</section>
+<section id="mosfet-gate-currents" class="level2">
+<h2 class="anchored" data-anchor-id="mosfet-gate-currents">MOSFET GATE CURRENTS</h2>
+<p>IXTP4N65X2 <img src="./img/mosfet_capacitance.webp" class="img-fluid"></p>
+<div id="03e4b1cd-b825-4213-a2a6-6c67510db9e8" class="cell" data-execution_count="20">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MOSFET data</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>Vgs<span class="op">=</span><span class="fl">4.2</span> <span class="co"># [V] @25degc</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>Vgs_min<span class="op">=</span><span class="fl">3.7</span> <span class="co"># [V] @125degC</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>Idmax<span class="op">=</span><span class="fl">4</span> <span class="co"># [A]</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>gfs<span class="op">=</span><span class="fl">4.2</span> <span class="co"># [S] transcoductance</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>Rdson<span class="op">=</span><span class="fl">850e-3</span> <span class="co"># [mOhm] @25degC</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a> Ciss<span class="op">=</span><span class="fl">455</span> <span class="co">#[pF]</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a> Coss<span class="op">=</span><span class="fl">294</span> <span class="co">#[pF]</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a> Crss<span class="op">=</span><span class="fl">0.8</span> <span class="co">#[pF]</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a> Crssmax<span class="op">=</span><span class="fl">180</span> <span class="co">#[pF]</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>Rg<span class="op">=</span><span class="fl">13</span> <span class="co">#[Ohm] gate resistance</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>Rs<span class="op">=</span>(<span class="fu">sqrt</span>(<span class="fl">2</span><span class="op">*</span>Idmax<span class="op">/</span>gfs))<span class="op">/</span>Idmax</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>Rd<span class="op">=</span>Rdson<span class="op">-</span>Rs<span class="op">-</span><span class="fl">1</span><span class="op">/</span>(gfs<span class="op">*</span>(<span class="fl">10</span><span class="op">-</span>Rs<span class="op">/</span>Rdson<span class="op">-</span>Vgs))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># MOSFET data</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Vgs = 4.2000 # [V] @25degc</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Vgs_min = 3.7000 # [V] @125degC</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Idmax = 4 # [A]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>gfs = 4.2000 # [S] transcoductance</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rdson = 0.8500 # [mOhm] @25degC</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Ciss = 455 #[pF]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Coss = 294 #[pF]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Crss = 0.8000 #[pF]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Crssmax = 180 #[pF]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rg = 13 #[Ohm] gate resistance</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rs = 0.3450</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rd = 0.4608</code></pre>
+</div>
+</div>
+<div id="fa6ed455-f584-47d7-bc4e-2c20c2500c6f" class="cell" data-execution_count="21">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>Cgs<span class="op">=</span>Ciss<span class="op">-</span>Crss <span class="co"># [pF] gate conductance</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co">#inductance of PCB trace (1.2mm PCB thk, 0.5mm trace)</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>L<span class="op">=</span><span class="fl">10e-9</span> <span class="co"># [nH/cm]</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>L_g<span class="op">=</span><span class="fl">2</span><span class="op">*</span>L <span class="co"># assume 2cm</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>L_s<span class="op">=</span><span class="fl">1</span><span class="op">*</span>L <span class="co"># assume 1cm</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Reach max gate voltage in t_rise[ms]</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>t_rise<span class="op">=</span><span class="fl">1e-3</span> <span class="co">#[sec]</span></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>f<span class="op">=</span><span class="fl">1</span><span class="op">/</span>(<span class="fl">4</span><span class="op">*</span>t_rise) <span class="co"># [Hz]</span></span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a><span class="co">#current needed to drive the gate</span></span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>Ig<span class="op">=</span>(Cgs<span class="op">*</span><span class="fl">1e-12</span> <span class="op">*</span> (Vgs<span class="op">/</span>t_rise))<span class="op">*</span><span class="fl">10e3</span> <span class="co">#[mA]</span></span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a><span class="co"># with gate resistance we already have</span></span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>Vgs<span class="op">/</span>Rg <span class="co">#[A]</span></span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a><span class="co">#RLC oscilator [MHz]</span></span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>w<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="fu">sqrt</span>((L_g<span class="op">+</span>L_s)<span class="op">*</span>Ciss<span class="op">*</span><span class="fl">1e-12</span>) <span class="op">*</span><span class="fl">10e-6</span></span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a><span class="co">#unlikely to induce this freq, but let's keep it dumped</span></span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>Rg_add<span class="op">=</span><span class="fl">50</span></span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a><span class="fu">zeta</span><span class="op">=</span>Rg_add<span class="op">/</span>(<span class="fl">2</span><span class="op">*</span>(<span class="fu">sqrt</span>(Cgs<span class="op">*</span><span class="fl">1e-12</span><span class="op">/</span>(L_s<span class="op">+</span>L_g))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>Cgs = 454.20 # [pF] gate conductance</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+#inductance of PCB trace (1.2mm PCB thk, 0.5mm trace)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>L = 1.0000e-08 # [nH/cm]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>L_g = 2.0000e-08 # assume 2cm</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>L_s = 1.0000e-08 # assume 1cm</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+#Reach max gate voltage in t_rise[ms]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>t_rise = 1.0000e-03 #[sec]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>f = 250 # [Hz]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+#current needed to drive the gate</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Ig = 0.019076 #[mA]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># with gate resistance we already have</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>ans = 0.3231 #[A]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+#RLC oscilator [MHz]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>w = 2706.7</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#unlikely to induce this freq, but let's keep it dumped</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rg_add = 50</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>zeta = 203.18</code></pre>
+</div>
+</div>
+</section>
+<section id="reference-voltage-set" class="level1">
+<h1>reference voltage set</h1>
+<p><img src="./img/reference_voltage_set.png" class="img-fluid"></p>
+<div id="e103c014-685a-4b29-9e49-93f42dea8341" class="cell" data-execution_count="22">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">graphics_toolkit</span> plotly</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>displayformat plotly_interactive_legend <span class="fu">true</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>displayformat include_comment <span class="fu">true</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>syms Vm_s R_2 R_3 Rset_s<span class="op">;</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>Vcc<span class="op">=</span><span class="fl">10</span> <span class="co"># [V]</span></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a><span class="co"># first we need to drop voltage to ~Vsense</span></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>Vsense <span class="op">=</span> I_in<span class="op">*</span>Rsense</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>Rpot_in<span class="op">=</span><span class="fl">1e3</span></span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>R1_in<span class="op">=</span><span class="fl">1e6</span></span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>Rset_in<span class="op">=</span>Rpot_in<span class="op">*</span><span class="fl">0.5</span></span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>Vin<span class="op">=</span>Vcc<span class="op">*</span>(Rset_in<span class="op">/</span>((Rpot_in<span class="op">-</span>Rset_in<span class="op">+</span>R1_in)<span class="op">+</span>Rset_in)) <span class="co"># [V] input voltage for divider</span></span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a><span class="co"># voltage divider</span></span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a>Rpot<span class="op">=</span><span class="fl">20e3</span><span class="op">;</span></span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-19"><a href="#cb61-19" aria-hidden="true" tabindex="-1"></a>Io<span class="op">=</span><span class="fu">linspace</span>(<span class="fl">0</span><span class="op">,</span>I_in<span class="op">,</span><span class="fl">15</span>)<span class="op">;</span></span>
+<span id="cb61-20"><a href="#cb61-20" aria-hidden="true" tabindex="-1"></a>Vm<span class="op">=</span>Io<span class="op">*</span>Rsense<span class="op">;</span></span>
+<span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>Rset_s <span class="op">=</span> solve((Rset_s <span class="op">/</span> ((Rpot<span class="op">-</span>Rset_s) <span class="op">+</span> Rset_s))<span class="op">*</span>Vin<span class="op">==</span>Vm_s<span class="op">,</span>Rset_s)</span>
+<span id="cb61-23"><a href="#cb61-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a>Rset<span class="op">=</span>subs(Rset_s<span class="op">,</span>{Vm_s}<span class="op">,</span>{Vm})<span class="op">;</span></span>
+<span id="cb61-25"><a href="#cb61-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-26"><a href="#cb61-26" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">double</span>(Rset)<span class="op">,</span>Io)</span>
+<span id="cb61-27"><a href="#cb61-27" aria-hidden="true" tabindex="-1"></a><span class="fu">xlabel</span>(<span class="st">"potentiometer"</span>)</span>
+<span id="cb61-28"><a href="#cb61-28" aria-hidden="true" tabindex="-1"></a><span class="fu">ylabel</span>(<span class="st">"current"</span>)</span>
+<span id="cb61-29"><a href="#cb61-29" aria-hidden="true" tabindex="-1"></a><span class="fu">ylim</span>([<span class="fl">0</span><span class="op">,</span><span class="fu">max</span>(Io)])</span>
+<span id="cb61-30"><a href="#cb61-30" aria-hidden="true" tabindex="-1"></a><span class="fu">double</span>(<span class="fu">max</span>(Rset))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>Vcc = 10 # [V]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># first we need to drop voltage to ~Vsense</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Vsense = 5.0000e-03</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rpot_in = 1000</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>R1_in = 1000000</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Rset_in = 500</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Vin = 4.9950e-03 # [V] input voltage for divider</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+# voltage divider</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math display">\[Rset_s=4004000 Vm_{s}\]</span></p>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="constant_current_sink_files/figure-html/cell-8-output-10.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>ans = 20020</code></pre>
+</div>
+</div>
+</section>
+<section id="soft-latching-circuits" class="level1">
+<h1>soft latching circuits</h1>
+<p>mosfet array IRF319PbF <img src="./img/soft_latching_switch.svg" class="img-fluid"></p>
+<p>https://www.falstad.com/s.php?s=kfboRS</p>
+</section>
+<section id="capacitor" class="level1">
+<h1>capacitor</h1>
+<section id="capacitor-in-series" class="level2">
+<h2 class="anchored" data-anchor-id="capacitor-in-series">capacitor in series</h2>
+<p>$ C_{eq} = (_{i=1}^n )^{-1} $</p>
+<div id="e6c3f824-7382-48e9-b67e-6ecd286c3d2a" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>tikz({</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\draw[thick] (0,0) to[short,*-] ++(3,0) to[C=$C_1$] ++(0,3) to[short,-*] ++(-3,0);"</span></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\draw[thick] (3,0) -- ++(3,0) to[C=$C_2$] ++(0,3) -- ++(-3,0);"</span></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\draw[thick,dashed] (6,0) -- ++(3,0) to[open] ++(0,3) -- ++(-3,0);"</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\draw[thick]  (9,0) to[C=$C_n$] ++(0,3);"</span></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\draw (0,0) to[open=$V_-^+$] (0,3);"</span></span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span><span class="fl">200</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>warning: your version of GraphicsMagick limits images to 8 bits per pixel</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="constant_current_sink_files/figure-html/cell-9-output-2.png" width="3216" height="990" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="72da7976-dd87-47cb-9906-b93672339288" class="cell" data-execution_count="55">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> Ceq <span class="op">=</span> Cseries(Cvec)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">usage</span> <span class="op">=</span> {</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a><span class="st">"Cseries([1 2 3, ...])"</span></span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="fu">nargin</span> <span class="op">==</span> <span class="fl">0</span></span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">disp</span>(<span class="st">"Usage:\n"</span>)</span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">disp</span>(<span class="fu">usage</span>)</span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">error</span>(<span class="st">"Cseries: no input"</span>)<span class="op">;</span></span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">!</span><span class="fu">isvector</span>(Cvec)</span>
+<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">error</span>(<span class="st">"Cseries: input must be a vector"</span>)<span class="op">;</span></span>
+<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a>Ceq<span class="op">=</span><span class="fl">0</span><span class="op">;</span></span>
+<span id="cb73-16"><a href="#cb73-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="fu">i</span><span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(Cvec)</span>
+<span id="cb73-17"><a href="#cb73-17" aria-hidden="true" tabindex="-1"></a>    Ceq <span class="op">=</span> Ceq <span class="op">+</span> <span class="fl">1</span> <span class="op">/</span> Cvec(<span class="fu">i</span>)<span class="op">;</span></span>
+<span id="cb73-18"><a href="#cb73-18" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb73-19"><a href="#cb73-19" aria-hidden="true" tabindex="-1"></a>Ceq <span class="op">=</span> <span class="fl">1</span><span class="op">/</span> Ceq<span class="op">;</span></span>
+<span id="cb73-20"><a href="#cb73-20" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="capacitor-charging" class="level2">
+<h2 class="anchored" data-anchor-id="capacitor-charging">capacitor charging</h2>
+<p>$ I(t) = C $</p>
+<p>or</p>
+<p>$ = C $</p>
+<div id="3a083dd9-778f-4ee4-9663-ff42d2377935" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>displayformat include_comment <span class="fu">true</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg</span> <span class="bu">load</span> symbolic</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="fu">warning</span>(<span class="st">'off'</span><span class="op">,</span> <span class="st">'all'</span>)<span class="op">;</span></span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>syms Vcap(t) Vm(t) C</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a><span class="co">% starting circuit</span></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a><span class="co">% charging cap through R1 and R2</span></span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>R1<span class="op">=</span><span class="fl">10e3</span><span class="op">;</span></span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>R2<span class="op">=</span><span class="fl">10e3</span><span class="op">;</span></span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>R3<span class="op">=</span><span class="fl">10e3</span> <span class="co"># aa</span></span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>Vin<span class="op">=</span><span class="fl">10</span><span class="op">;</span></span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>C1<span class="op">=</span><span class="fl">27e-9</span><span class="op">;</span></span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a><span class="co">% keep C as symbol, other way the kernel strugle</span></span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a><span class="co">% with typically very small values of C</span></span>
+<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a><span class="co">% capacitor charging equation</span></span>
+<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a>cap <span class="op">=</span> (Vin <span class="op">-</span> Vcap(t))<span class="op">/</span>(R1 <span class="op">+</span> R2) <span class="op">==</span> C <span class="op">*</span> <span class="fu">diff</span>(Vcap<span class="op">,</span> t)<span class="op">;</span></span>
+<span id="cb74-17"><a href="#cb74-17" aria-hidden="true" tabindex="-1"></a>Vcap(t<span class="op">,</span>C) <span class="op">=</span> dsolve(cap<span class="op">,</span> Vcap(<span class="fl">0</span>)<span class="op">==</span><span class="fl">0</span>)</span>
+<span id="cb74-18"><a href="#cb74-18" aria-hidden="true" tabindex="-1"></a><span class="co">% current to cap</span></span>
+<span id="cb74-19"><a href="#cb74-19" aria-hidden="true" tabindex="-1"></a>Icap(t<span class="op">,</span>C) <span class="op">=</span> (Vin <span class="op">-</span> Vcap(t<span class="op">,</span>C)) <span class="op">/</span> (R1 <span class="op">+</span> R2)</span>
+<span id="cb74-20"><a href="#cb74-20" aria-hidden="true" tabindex="-1"></a><span class="co">% mosfet voltage; Vg for p-mosfet and Vd for n-mosfet</span></span>
+<span id="cb74-21"><a href="#cb74-21" aria-hidden="true" tabindex="-1"></a>Vm(t<span class="op">,</span>C) <span class="op">=</span> Vin <span class="op">-</span> R1 <span class="op">*</span> Icap(t<span class="op">,</span>C)</span>
+<span id="cb74-22"><a href="#cb74-22" aria-hidden="true" tabindex="-1"></a><span class="co">% fully charged after</span></span>
+<span id="cb74-23"><a href="#cb74-23" aria-hidden="true" tabindex="-1"></a>tfull<span class="op">=</span><span class="fu">double</span>(solve(Vcap(t<span class="op">,</span>C1)<span class="op">==</span><span class="fl">0.95</span> <span class="op">*</span> Vin<span class="op">,</span> t))<span class="op">*</span><span class="fl">1e3</span> <span class="co">#[ms]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>% starting circuit
+% charging cap through R1 and R2</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>R3 = 10000 # aa</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% keep C as symbol, other way the kernel strugle
+% with typically very small values of C
+% capacitor charging equation</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math display">\[Vcap(t, C)=10 - 10 e^{- \frac{t}{20000 C}}\]</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% current to cap</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math display">\[Icap(t, C)=\frac{e^{- \frac{t}{20000 C}}}{2000}\]</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% mosfet voltage; Vg for p-mosfet and Vd for n-mosfet</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math display">\[Vm(t, C)=10 - 5 e^{- \frac{t}{20000 C}}\]</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% fully charged after</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>tfull = 1.6177 #[ms]</code></pre>
+</div>
+</div>
+<div id="e64c3ad3-a4b2-49de-9638-69f21b90afd0" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>syms Vcap_d(t)</span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="co">% turning on</span></span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a><span class="co">% discharging cap through R3</span></span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a><span class="co">% cap must sustain Vth for time enough to turn on n-mosfet</span></span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>tnon<span class="op">=</span><span class="fl">12e-6</span></span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a><span class="co">% capacitor discharging equation</span></span>
+<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>cap_d <span class="op">=</span> (Vcap_d(t) <span class="op">/</span> R3) <span class="op">==</span> <span class="op">-</span>C <span class="op">*</span> <span class="fu">diff</span>(Vcap_d<span class="op">,</span> t)<span class="op">;</span></span>
+<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>Vcap_d(t) <span class="op">=</span> dsolve(cap_d<span class="op">,</span>Vcap_d(<span class="fl">0</span>)<span class="op">==</span>Vin)</span>
+<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a><span class="co">% voltge drop when n-mosfet turning on</span></span>
+<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a><span class="fu">double</span>(Vcap_d(tnon)) <span class="co"># must be above Vth=1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-error">
+<pre><code>Execution exception: 'syms' undefined near line 1, column 1
+
+The 'syms' function belongs to the symbolic package from Octave Forge
+which you have installed, but not loaded.  To load the package, type
+‘pkg load symbolic’ from the Octave prompt.
+Execution exception: 'syms' undefined near line 1, column 1
+
+The 'syms' function belongs to the symbolic package from Octave Forge
+which you have installed, but not loaded.  To load the package, type
+‘pkg load symbolic’ from the Octave prompt.
+error: called from
+    cell[1] at line 1 column 1</code></pre>
+</div>
+</div>
+<div id="13382d63-c796-4bb7-a881-ea0f9a3db56e" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>syms Vcap_c(t)</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="co">% turn off</span></span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="co">% cap charging current through R3 </span></span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a><span class="co">% cap must drain enough current do drop beloow Vth </span></span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a><span class="co">% for time enough to turn on n-mosfet</span></span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>tnoff<span class="op">=</span><span class="fl">13e-6</span></span>
+<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a>R3<span class="op">=</span><span class="fl">10e3</span></span>
+<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a><span class="co">% capacitor charging equation</span></span>
+<span id="cb84-10"><a href="#cb84-10" aria-hidden="true" tabindex="-1"></a>cap_c <span class="op">=</span> (Vin <span class="op">-</span> Vcap_c(t)) <span class="op">/</span> R3 <span class="op">==</span> C <span class="op">*</span> <span class="fu">diff</span>(Vcap_c<span class="op">,</span> t)<span class="op">;</span></span>
+<span id="cb84-11"><a href="#cb84-11" aria-hidden="true" tabindex="-1"></a>Vcap_c(t) <span class="op">=</span> dsolve(cap_c<span class="op">,</span> Vcap_c(<span class="fl">0</span>)<span class="op">==</span><span class="fl">0</span>)</span>
+<span id="cb84-12"><a href="#cb84-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-13"><a href="#cb84-13" aria-hidden="true" tabindex="-1"></a><span class="co">% voltge drop through R3 when n-mosfet turning off</span></span>
+<span id="cb84-14"><a href="#cb84-14" aria-hidden="true" tabindex="-1"></a><span class="fu">double</span>(Vcap_c(tnoff)) <span class="co"># must be below Vth=1V</span></span>
+<span id="cb84-15"><a href="#cb84-15" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="5edcde7f-0562-41ce-9d6a-3a740e69ff5a" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co">% n-mosfet power</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>Rdson <span class="op">=</span> <span class="fl">0.046</span></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>In <span class="op">=</span> Vin <span class="op">/</span> (R1 <span class="op">+</span> Rdson)</span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>Pn <span class="op">=</span> In<span class="op">^</span><span class="fl">2</span> <span class="op">*</span> Rdson</span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a><span class="co">% p-mosfet max power</span></span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>Pp <span class="op">=</span> Vin <span class="op">*</span> <span class="fl">100e-3</span> <span class="co"># max current from LDO</span></span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a>Vin <span class="op">*</span> <span class="fl">5e-3</span> <span class="op">*</span> <span class="fl">24</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="363baea1-b828-4d73-96ec-312e125d8d24" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co">% LED switch</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>If <span class="op">=</span> <span class="fl">20e-3</span></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>Rled <span class="op">=</span> Vin <span class="op">/</span> If</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="b660aade-fa3d-4722-838b-9f9ad7d12917" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>displayformat include_comment <span class="fu">true</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg</span> <span class="bu">load</span> symbolic</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="fu">warning</span>(<span class="st">'off'</span><span class="op">,</span> <span class="st">'all'</span>)<span class="op">;</span></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>syms Vcap(t) Vm(t)</span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a><span class="co">% starting circuit</span></span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a><span class="co">% charging cap through R1 and R2</span></span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>R1<span class="op">=</span><span class="fl">10e3</span><span class="op">;</span></span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>R3<span class="op">=</span><span class="fl">10e3</span><span class="op">;</span></span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>Vin<span class="op">=</span><span class="fl">10</span><span class="op">;</span></span>
+<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a>C<span class="op">=</span><span class="fl">27e-6</span><span class="op">;</span></span>
+<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a><span class="co">% capacitor charging equation</span></span>
+<span id="cb87-13"><a href="#cb87-13" aria-hidden="true" tabindex="-1"></a>cap <span class="op">=</span> (Vin <span class="op">-</span> Vcap(t))<span class="op">/</span>(R1 <span class="op">+</span> R2) <span class="op">==</span> C<span class="op">*</span><span class="fl">1e-3</span> <span class="op">*</span> <span class="fu">diff</span>(Vcap<span class="op">,</span> t)</span>
+<span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a><span class="co">% Vcap(t) = dsolve(cap, Vcap(0)==0)</span></span>
+<span id="cb87-15"><a href="#cb87-15" aria-hidden="true" tabindex="-1"></a>Vcap(t) <span class="op">=</span> dsolve(cap<span class="op">,</span> Vcap(<span class="fl">0</span>)<span class="op">==</span><span class="fl">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><span class="math display">\[
+I=C* \frac{dV_{cap}}{dt}
+\]</span></p>
+<div id="a163efec-e79a-4961-8ff4-4880bc3de217" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>displayformat include_comment <span class="fu">true</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pkg</span> <span class="bu">load</span> symbolic</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="fu">warning</span>(<span class="st">'off'</span><span class="op">,</span> <span class="st">'all'</span>)<span class="op">;</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>syms Vcap(t) Vm(t) C</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>Vin<span class="op">=</span><span class="fl">10</span></span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>R1<span class="op">=</span><span class="fl">10e3</span></span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>C1<span class="op">=</span><span class="fl">27e-9</span></span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>tnoff<span class="op">=</span><span class="fl">13e-6</span></span>
+<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a>cap <span class="op">=</span> (Vin <span class="op">-</span> Vcap(t)) <span class="op">/</span> R1  <span class="op">==</span> C  <span class="op">*</span> <span class="fu">diff</span>(Vcap<span class="op">,</span> t)<span class="op">;</span></span>
+<span id="cb88-11"><a href="#cb88-11" aria-hidden="true" tabindex="-1"></a>Vcap(t<span class="op">,</span>C)<span class="op">=</span>dsolve(cap<span class="op">,</span>Vcap(<span class="fl">0</span>)<span class="op">==</span><span class="fl">0</span>)</span>
+<span id="cb88-12"><a href="#cb88-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-13"><a href="#cb88-13" aria-hidden="true" tabindex="-1"></a><span class="fu">double</span>(Vcap(tnoff<span class="op">,</span>C1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>Vin = 10</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>R1 = 10000</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>C1 = 2.7000e-08</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>tnoff = 1.3000e-05</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math display">\[Vcap(t, C)=10 - 10 e^{- \frac{t}{10000 C}}\]</span></p>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>ans = 0.4701</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ERROR: received bad message: No such comm registered: a3fc237c-6518-4bbe-8115-f712b86787f9
+Message type: comm_msg</code></pre>
+</div>
+</div>
+<div id="1225f871-8a56-460e-a595-e09e8c4d9745" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>dsolve(cap<span class="op">,</span> Vcap(<span class="fl">0</span>)<span class="op">==</span><span class="fl">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="d1c4eb00-256c-4577-9058-a9a52e8311ae" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="st">"displayformat include_comment true\npkg load symbolic\nwarning('off', 'all');\n\nsyms Vcap(t) Vm(t) C\n% starting circuit\n% charging cap through R1 and R2\nR1=10e3;\nR2=10e3;\nR3=10e3;\nVin=10;\nC1=27e-9;\n% capacitor charging equation\ncap = (Vin - Vcap(t))/(R1 + R2) == C * diff(Vcap, t);\nVcap(t,C) = dsolve(cap, Vcap(0)==0)\n% current to cap\nIcap(t,C) = (Vin - Vcap(t,C)) / (R1 + R2)\n% mosfet voltage; Vg for p-mosfet and Vd for n-mosfet\nVm(t,C) = Vin - R1 * Icap(t,C)\n% fully charged after\ntfull=double(solve(Vcap(t,C1)==0.95 * Vin, t))*1e3 #[ms]\nsyms Vcap_d(t)\n% turning on\n% discharging cap through R3\n% cap must sustain Vth for time enough to turn on n-mosfet\ntnon=12e-6\n\n% capacitor discharging equation\ncap_d = (Vcap_d(t) / R3) == -C * diff(Vcap_d, t);\nVcap_d(t) = dsolve(cap_d,Vcap_d(0)==Vin)\n% voltge drop when n-mosfet turning on\ndouble(Vcap_d(tnon)) # must be above Vth=1\nsyms Vcap_c(t)\n% turn off\n% cap charging current through R3 \n% cap must drain enough current do drop beloow Vth \n% for time enough to turn on n-mosfet\ntnoff=13e-6\nR3=10e3\n#\n% capacitor charging equation\ncap_c = (Vin - Vcap_c(t)) / R3 == C * diff(Vcap_c, t);\nVcap_c(t) = dsolve(cap_c, Vcap_c(0)==0)\n\n% voltge drop through R3 when n-mosfet turning off\ndouble(Vcap_c(tnoff)) # must be below Vth=1V\n\n% n-mosfet power\nRdson = 0.046\nIn = Vin / (R1 + Rdson)\nPn = In^2 * Rdson\n\n% p-mosfet max power\nPp = Vin * 100e-3 # max current from LDO\n\nVin * 5e-3 * 24% LED switch\nIf = 20e-3\nRled = Vin / Ifdisplayformat include_comment true\npkg load symbolic\nwarning('off', 'all');\n\nsyms Vcap(t) Vm(t)\n% starting circuit\n% charging cap through R1 and R2\nR1=10e3;\nR3=10e3;\nVin=10;\nC=27e-6;\n% capacitor charging equation\ncap = (Vin - Vcap(t))/(R1 + R2) == C*1e-3 * diff(Vcap, t)\n% Vcap(t) = dsolve(cap, Vcap(0)==0)\nVcap(t) = dsolve(cap, Vcap(0)==0)displayformat include_comment true\npkg load symbolic\nwarning('off', 'all');\n\nsyms Vcap(t) Vm(t) C\nVin=10\nR1=10e3\nC1=27e-9\ntnoff=13e-6\ncap = (Vin - Vcap(t)) / R1  == C  * diff(Vcap, t);\nVcap(t,C)=dsolve(cap,Vcap(0)==0)\n\ndouble(Vcap(tnoff,C1))dsolve(cap, Vcap(0)==0)\nplot"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>ERROR: received bad message: No such comm registered: 26461f69-37a7-4c7e-921a-641da75d7b47
+Message type: comm_msg
+ERROR: received bad message: No such comm registered: 77fbf533-c225-4234-af9a-8c209a945452
+Message type: comm_msg</code></pre>
+</div>
+</div>
+<div id="8ea077c1-9376-4e86-af5e-dd2be0b66b69" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="st">"displayformat include_comment true\npkg load symbolic\nwarning('off', 'all');\n\nsyms Vcap(t) Vm(t) C\n% starting circuit\n% charging cap through R1 and R2\nR1=10e3;\nR2=10e3;\nR3=10e3;\nVin=10;\nC1=27e-9;\n% capacitor charging equation\ncap = (Vin - Vcap(t))/(R1 + R2) == C * diff(Vcap, t);\nVcap(t,C) = dsolve(cap, Vcap(0)==0)\n% current to cap\nIcap(t,C) = (Vin - Vcap(t,C)) / (R1 + R2)\n% mosfet voltage; Vg for p-mosfet and Vd for n-mosfet\nVm(t,C) = Vin - R1 * Icap(t,C)\n% fully charged after\ntfull=double(solve(Vcap(t,C1)==0.95 * Vin, t))*1e3 #[ms]\nsyms Vcap_d(t)\n% turning on\n% discharging cap through R3\n% cap must sustain Vth for time enough to turn on n-mosfet\ntnon=12e-6\n\n% capacitor discharging equation\ncap_d = (Vcap_d(t) / R3) == -C * diff(Vcap_d, t);\nVcap_d(t) = dsolve(cap_d,Vcap_d(0)==Vin)\n% voltge drop when n-mosfet turning on\ndouble(Vcap_d(tnon)) # must be above Vth=1\nsyms Vcap_c(t)\n% turn off\n% cap charging current through R3 \n% cap must drain enough current do drop beloow Vth \n% for time enough to turn on n-mosfet\ntnoff=13e-6\nR3=10e3\n#\n% capacitor charging equation\ncap_c = (Vin - Vcap_c(t)) / R3 == C * diff(Vcap_c, t);\nVcap_c(t) = dsolve(cap_c, Vcap_c(0)==0)\n\n% voltge drop through R3 when n-mosfet turning off\ndouble(Vcap_c(tnoff)) # must be below Vth=1V\n\n% n-mosfet power\nRdson = 0.046\nIn = Vin / (R1 + Rdson)\nPn = In^2 * Rdson\n\n% p-mosfet max power\nPp = Vin * 100e-3 # max current from LDO\n\nVin * 5e-3 * 24% LED switch\nIf = 20e-3\nRled = Vin / Ifdisplayformat include_comment true\npkg load symbolic\nwarning('off', 'all');\n\nsyms Vcap(t) Vm(t)\n% starting circuit\n% charging cap through R1 and R2\nR1=10e3;\nR3=10e3;\nVin=10;\nC=27e-6;\n% capacitor charging equation\ncap = (Vin - Vcap(t))/(R1 + R2) == C*1e-3 * diff(Vcap, t)\n% Vcap(t) = dsolve(cap, Vcap(0)==0)\nVcap(t) = dsolve(cap, Vcap(0)==0)displayformat include_comment true\npkg load symbolic\nwarning('off', 'all');\n\nsyms Vcap(t) Vm(t) C\nVin=10\nR1=10e3\nC1=27e-9\ntnoff=13e-6\ncap = (Vin - Vcap(t)) / R1  == C  * diff(Vcap, t);\nVcap(t,C)=dsolve(cap,Vcap(0)==0)\n\ndouble(Vcap(tnoff,C1))dsolve(cap, Vcap(0)==0)\nplot"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="basic-assumptions-1" class="level2">
+<h2 class="anchored" data-anchor-id="basic-assumptions-1">BASIC ASSUMPTIONS</h2>
+<p>It is impossible? to have one MOSFET going full up to 3.5A and in the same time stay precise in low range of curents.- modular approach: 4 modules- three IXTP4N65X2 MOSFETS for 0.4A to 1A- one precise STF2N95K5 for 0 to 0.5A- maximum total <span class="math inline">\(V_{in}\)</span>=24V and <span class="math inline">\(I_{in}\)</span>=3.5A- minimum <span class="math inline">\(V_{in}\)</span>=1V and <span class="math inline">\(I_{in}\)</span>=0.10mA- <span class="math inline">\(V_{ref}\)</span> will be set with potentiometer, each mosfet separately- can be one common display- interface for current sensing on low side- device power from external supply: main 220V AC</p>
+<div id="55543482-a26a-437f-8417-7abafdcfb97e" class="cell" data-execution_count="24">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> tikz(circuit<span class="op">,</span>res)</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">% requires latex to be installed in system</span></span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">% texlive in opensuse takes 1.4GB!!!</span></span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">% use tinytex to install only what needed (51MB):</span></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">% - standalone</span></span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">% - pgf</span></span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">% - circuitikz</span></span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">% - pdfcrop</span></span>
+<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>  Usage<span class="op">=</span>{</span>
+<span id="cb99-11"><a href="#cb99-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tikz(\"\\draw (0,0) to[R] (2,0);\",res) // string"</span><span class="op">,</span></span>
+<span id="cb99-12"><a href="#cb99-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tikz({\"line1\", \"line2\", ...},res)   // cell array"</span></span>
+<span id="cb99-13"><a href="#cb99-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"adjust `res` if strange rendering or kernel crash"</span></span>
+<span id="cb99-14"><a href="#cb99-14" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb99-15"><a href="#cb99-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-16"><a href="#cb99-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="fu">nargin</span> <span class="op">==</span> <span class="fl">0</span></span>
+<span id="cb99-17"><a href="#cb99-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">disp</span>(<span class="st">"Usage:\n"</span>)</span>
+<span id="cb99-18"><a href="#cb99-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">disp</span>(Usage)</span>
+<span id="cb99-19"><a href="#cb99-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">error</span>(<span class="st">"tikz: no input"</span>)<span class="op">;</span></span>
+<span id="cb99-20"><a href="#cb99-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb99-21"><a href="#cb99-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="fu">nargin</span><span class="op">==</span><span class="fl">1</span></span>
+<span id="cb99-22"><a href="#cb99-22" aria-hidden="true" tabindex="-1"></a>      res<span class="op">=</span><span class="fl">100</span><span class="op">;</span></span>
+<span id="cb99-23"><a href="#cb99-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb99-24"><a href="#cb99-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-25"><a href="#cb99-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">% Accept string OR cell array</span></span>
+<span id="cb99-26"><a href="#cb99-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="fu">iscell</span>(circuit)</span>
+<span id="cb99-27"><a href="#cb99-27" aria-hidden="true" tabindex="-1"></a>    body <span class="op">=</span> <span class="fu">strjoin</span>(circuit<span class="op">,</span> <span class="st">"\n"</span>)<span class="op">;</span></span>
+<span id="cb99-28"><a href="#cb99-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb99-29"><a href="#cb99-29" aria-hidden="true" tabindex="-1"></a>    body <span class="op">=</span> circuit<span class="op">;</span></span>
+<span id="cb99-30"><a href="#cb99-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb99-31"><a href="#cb99-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-32"><a href="#cb99-32" aria-hidden="true" tabindex="-1"></a>  tex <span class="op">=</span> [</span>
+<span id="cb99-33"><a href="#cb99-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\documentclass[tikz,border=3pt]{standalone}\n"</span> <span class="op">...</span></span>
+<span id="cb99-34"><a href="#cb99-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\usepackage{circuitikz}\n"</span> <span class="op">...</span></span>
+<span id="cb99-35"><a href="#cb99-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\begin{document}\n"</span> <span class="op">...</span></span>
+<span id="cb99-36"><a href="#cb99-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\begin{circuitikz}\n"</span> <span class="op">...</span></span>
+<span id="cb99-37"><a href="#cb99-37" aria-hidden="true" tabindex="-1"></a>    body <span class="st">"\n"</span> <span class="op">...</span></span>
+<span id="cb99-38"><a href="#cb99-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\end{circuitikz}\n"</span> <span class="op">...</span></span>
+<span id="cb99-39"><a href="#cb99-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\end{document}\n"</span></span>
+<span id="cb99-40"><a href="#cb99-40" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
+<span id="cb99-41"><a href="#cb99-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-42"><a href="#cb99-42" aria-hidden="true" tabindex="-1"></a>  tmp <span class="op">=</span> <span class="fu">tempname</span>()<span class="op">;</span></span>
+<span id="cb99-43"><a href="#cb99-43" aria-hidden="true" tabindex="-1"></a>  texfile <span class="op">=</span> [tmp <span class="st">".tex"</span>]<span class="op">;</span></span>
+<span id="cb99-44"><a href="#cb99-44" aria-hidden="true" tabindex="-1"></a>  pdffile <span class="op">=</span> [tmp <span class="st">".pdf"</span>]<span class="op">;</span></span>
+<span id="cb99-45"><a href="#cb99-45" aria-hidden="true" tabindex="-1"></a>  auxfile <span class="op">=</span> [tmp <span class="st">".aux"</span>]<span class="op">;</span></span>
+<span id="cb99-46"><a href="#cb99-46" aria-hidden="true" tabindex="-1"></a>  logfile <span class="op">=</span> [tmp <span class="st">".log"</span>]<span class="op">;</span></span>
+<span id="cb99-47"><a href="#cb99-47" aria-hidden="true" tabindex="-1"></a>  cropdfile <span class="op">=</span> [tmp <span class="st">"_crop.pdf"</span>]<span class="op">;</span></span>
+<span id="cb99-48"><a href="#cb99-48" aria-hidden="true" tabindex="-1"></a>  pngbase <span class="op">=</span> [tmp]<span class="op">;</span></span>
+<span id="cb99-49"><a href="#cb99-49" aria-hidden="true" tabindex="-1"></a>  pngfile <span class="op">=</span> [pngbase <span class="st">"-1.png"</span>]<span class="op">;</span></span>
+<span id="cb99-50"><a href="#cb99-50" aria-hidden="true" tabindex="-1"></a>  imgfile <span class="op">=</span> [pngbase <span class="st">"_resize.png"</span>]<span class="op">;</span></span>
+<span id="cb99-51"><a href="#cb99-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-52"><a href="#cb99-52" aria-hidden="true" tabindex="-1"></a>  fid <span class="op">=</span> <span class="fu">fopen</span>(texfile<span class="op">,</span> <span class="st">"w"</span>)<span class="op">;</span></span>
+<span id="cb99-53"><a href="#cb99-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fwrite</span>(fid<span class="op">,</span> tex)<span class="op">;</span></span>
+<span id="cb99-54"><a href="#cb99-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fclose</span>(fid)<span class="op">;</span></span>
+<span id="cb99-55"><a href="#cb99-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-56"><a href="#cb99-56" aria-hidden="true" tabindex="-1"></a>  <span class="co">% Compile circuitikz to pdf</span></span>
+<span id="cb99-57"><a href="#cb99-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="fu">sprintf</span>(</span>
+<span id="cb99-58"><a href="#cb99-58" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pdflatex -interaction=nonstopmode -halt-on-error -output-directory %s %s &gt; /dev/null"</span><span class="op">,</span></span>
+<span id="cb99-59"><a href="#cb99-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fileparts</span>(texfile)<span class="op">,</span> texfile</span>
+<span id="cb99-60"><a href="#cb99-60" aria-hidden="true" tabindex="-1"></a>  ))<span class="op">;</span></span>
+<span id="cb99-61"><a href="#cb99-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-62"><a href="#cb99-62" aria-hidden="true" tabindex="-1"></a>  <span class="co">% Auto-crop PDF (tight bounding box around circuit)</span></span>
+<span id="cb99-63"><a href="#cb99-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="fu">sprintf</span>(</span>
+<span id="cb99-64"><a href="#cb99-64" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pdfcrop --hires %s %s &gt; /dev/null"</span><span class="op">,</span> </span>
+<span id="cb99-65"><a href="#cb99-65" aria-hidden="true" tabindex="-1"></a>    pdffile<span class="op">,</span> cropdfile</span>
+<span id="cb99-66"><a href="#cb99-66" aria-hidden="true" tabindex="-1"></a>  ))<span class="op">;</span></span>
+<span id="cb99-67"><a href="#cb99-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-68"><a href="#cb99-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-69"><a href="#cb99-69" aria-hidden="true" tabindex="-1"></a>  <span class="co">% Convert PDF → PNG</span></span>
+<span id="cb99-70"><a href="#cb99-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="fu">sprintf</span>(</span>
+<span id="cb99-71"><a href="#cb99-71" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pdftoppm -png -r 400 -mono %s %s &gt; /dev/null"</span><span class="op">,</span> </span>
+<span id="cb99-72"><a href="#cb99-72" aria-hidden="true" tabindex="-1"></a>    cropdfile<span class="op">,</span> pngbase</span>
+<span id="cb99-73"><a href="#cb99-73" aria-hidden="true" tabindex="-1"></a>  ))<span class="op">;</span></span>
+<span id="cb99-74"><a href="#cb99-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-75"><a href="#cb99-75" aria-hidden="true" tabindex="-1"></a>  <span class="co">% resize</span></span>
+<span id="cb99-76"><a href="#cb99-76" aria-hidden="true" tabindex="-1"></a>   <span class="fu">system</span>(<span class="fu">sprintf</span>(</span>
+<span id="cb99-77"><a href="#cb99-77" aria-hidden="true" tabindex="-1"></a>       <span class="st">"magick %s -resize %d%%  -interpolate Nearest %s &gt; /dev/null"</span><span class="op">,</span> </span>
+<span id="cb99-78"><a href="#cb99-78" aria-hidden="true" tabindex="-1"></a>       pngfile<span class="op">,</span> res<span class="op">,</span>imgfile</span>
+<span id="cb99-79"><a href="#cb99-79" aria-hidden="true" tabindex="-1"></a>    ))<span class="op">;</span></span>
+<span id="cb99-80"><a href="#cb99-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-81"><a href="#cb99-81" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-82"><a href="#cb99-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-83"><a href="#cb99-83" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="fu">exist</span>(imgfile<span class="op">,</span> <span class="st">"file"</span>)</span>
+<span id="cb99-84"><a href="#cb99-84" aria-hidden="true" tabindex="-1"></a>     img <span class="op">=</span> <span class="fu">imread</span>(imgfile)<span class="op">;</span></span>
+<span id="cb99-85"><a href="#cb99-85" aria-hidden="true" tabindex="-1"></a>     <span class="co">% pdftoppm -mono is producing PNG with pixels in range [0,1]</span></span>
+<span id="cb99-86"><a href="#cb99-86" aria-hidden="true" tabindex="-1"></a>     <span class="co">% imshow() is expecting [0,255]</span></span>
+<span id="cb99-87"><a href="#cb99-87" aria-hidden="true" tabindex="-1"></a>     <span class="co">% or double, but double takes more memory</span></span>
+<span id="cb99-88"><a href="#cb99-88" aria-hidden="true" tabindex="-1"></a>     <span class="co">% img = 255 * uint8(img);</span></span>
+<span id="cb99-89"><a href="#cb99-89" aria-hidden="true" tabindex="-1"></a>     <span class="fu">figure</span>(<span class="st">'Position'</span><span class="op">,</span> [<span class="fl">0</span> <span class="fl">0</span> <span class="fu">size</span>(img<span class="op">,</span> <span class="fl">2</span>) <span class="fu">size</span>(img<span class="op">,</span><span class="fl">1</span>)])<span class="op">;</span></span>
+<span id="cb99-90"><a href="#cb99-90" aria-hidden="true" tabindex="-1"></a>     <span class="fu">imshow</span>(img)<span class="op">;</span></span>
+<span id="cb99-91"><a href="#cb99-91" aria-hidden="true" tabindex="-1"></a>     <span class="co">% colormap(gray(256));</span></span>
+<span id="cb99-92"><a href="#cb99-92" aria-hidden="true" tabindex="-1"></a>     <span class="fu">axis</span> <span class="fu">image</span> off<span class="op">;</span></span>
+<span id="cb99-93"><a href="#cb99-93" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb99-94"><a href="#cb99-94" aria-hidden="true" tabindex="-1"></a>     <span class="fu">error</span>(<span class="st">"tikz: rendering failed"</span>)<span class="op">;</span></span>
+<span id="cb99-95"><a href="#cb99-95" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb99-96"><a href="#cb99-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">delete</span>(texfile)<span class="op">;</span></span>
+<span id="cb99-97"><a href="#cb99-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">delete</span>(pdffile)<span class="op">;</span></span>
+<span id="cb99-98"><a href="#cb99-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">delete</span>(cropdfile)<span class="op">;</span></span>
+<span id="cb99-99"><a href="#cb99-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">delete</span>(pngfile)<span class="op">;</span></span>
+<span id="cb99-100"><a href="#cb99-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">delete</span>(imgfile)<span class="op">;</span></span>
+<span id="cb99-101"><a href="#cb99-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">delete</span>(auxfile)<span class="op">;</span></span>
+<span id="cb99-102"><a href="#cb99-102" aria-hidden="true" tabindex="-1"></a>  <span class="fu">delete</span>(logfile)<span class="op">;</span></span>
+<span id="cb99-103"><a href="#cb99-103" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb99-104"><a href="#cb99-104" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="74a59048-1a64-4eaa-8344-b2e60ed39558" class="cell" data-execution_count="25">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb100"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>tikz({</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\draw[thick] (0,0) to[short,*-] ++(3,0) to[C=$C_1$] ++(0,3) to[short,-*] ++(-3,0);"</span></span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\draw[thick] (3,0) -- ++(3,0) to[C=$C_2$] ++(0,3) -- ++(-3,0);"</span></span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\draw[thick,dashed] (6,0) -- ++(3,0) to[open] ++(0,3) -- ++(-3,0);"</span></span>
+<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\draw[thick]  (9,0) to[C=$C_n$] ++(0,3);"</span></span>
+<span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"\\draw (0,0) to[open=$V_-^+$] (0,3);"</span></span>
+<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span><span class="fl">200</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="constant_current_sink_files/figure-html/cell-22-output-1.png" width="3216" height="990" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="ca102a58-3682-40c8-b415-bbc5f1a92a63" class="cell" data-execution_count="26">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>tikz()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Usage:
+
+{
+  [1,1] = tikz("\draw (0,0) to[R] (2,0);",res) // string
+  [2,1] = tikz({"line1", "line2", ...},res)   // cell array
+  [3,1] = adjust `res` if strange rendering or kernel crash
+}</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>Execution exception: tikz: no input
+Execution exception: tikz: no input
+error: called from
+    tikz at line 19 column 5
+    cell[26] at line 1 column 1</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

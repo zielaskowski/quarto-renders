@@ -1,0 +1,42 @@
+[
+  {
+    "objectID": "power_bench.html",
+    "href": "power_bench.html",
+    "title": "power bench",
+    "section": "",
+    "text": "After some time of playing with electronics you will face the need of having a power bench supply for your projects. I did. Sure, you can buy complete solution from aliexpres or sophisticated solution from Tectronix (no affilation here) if you happen to be a milionare but it is no fun! So here what I did.\nWhat we need is adjustable voltage and current control, monitor and display the setting, real current consumption…and maybe more, we will see. The motto of the project is as follow:\nWhat is missing now: (but probably will happen some day)\nCode\ndisplayformat include_comment true",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "power_bench.html#power",
+    "href": "power_bench.html#power",
+    "title": "power bench",
+    "section": "power",
+    "text": "power\nPower is the main paramter and will be our main limiter, defining basically everything: size, cost, component selection and the extent of failure if something goes wrong. But to make the power bench usable and universal we need a lot of power.\nOne of the potential usage scenarios is battery charging. To make it usefull lets settle down at 24V and 1.5A which is already giving 36W. This will be our starting point. Since for now AC/DC converter is not in scope, 36W allow wide range of options from market in reasonable prices.\nFor electric scooter lovers, the best option would be to have 36V and ~2A. But this set up another level problems for AC/DC adapter, power dissipation and control module. Theroetically may be possible with aditional booster module and stronger power supply and a bit of luck…not now.\nHere some examples, assuming conservatively slow charging rate at 0.2 C:\n\n\nCode\n# standard 2.7'' cell\nV = 3.7 #V\nC = 3.4 #Ah\nI = 0.2*C #A\nP=V * I #W\n#\n# battery for power tools\nV = 20     #V\nC = 3      #Ah\nI = 0.2*C #A\nP=V * I #W\n#\n# power bank\nV = 5  #V\nI = 3  #A\nP = V * I #W\n#\n# battery for electric scooter\nV = 36     #V\nC = 7.8 #Ah\nI = 0.2*C #A\nP=V * I #W\n\n\n# standard 2.7'' cell\n\n\nV = 3.7000 #V\n\n\nC = 3.4000 #Ah\n\n\nI = 0.6800 #A\n\n\nP = 2.5160 #W\n\n\n\n# battery for power tools\n\n\nV = 20     #V\n\n\nC = 3      #Ah\n\n\nI = 0.6000 #A\n\n\nP = 12.000 #W\n\n\n\n# power bank\n\n\nV = 5  #V\n\n\nI = 3  #A\n\n\nP = 15 #W\n\n\n\n# battery for electric scooter\n\n\nV = 36     #V\n\n\nC = 7.8000 #Ah\n\n\nI = 1.5600 #A\n\n\nP = 56.160 #W",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "power_bench.html#modules",
+    "href": "power_bench.html#modules",
+    "title": "power bench",
+    "section": "modules",
+    "text": "modules\nThe whole bench supply is to be made from independent modules. So don’t need to build all elements, you can select only the ones that makes most sense for you with possibility to add other later.\n\n\n\ncircuitjs\n\n\n\nconstant voltage supply\n\n\nconstant current supply\n\n\ndisplay meter\n\n\npower monitor",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "power_bench.html#data-sheet",
+    "href": "power_bench.html#data-sheet",
+    "title": "power bench",
+    "section": "data sheet",
+    "text": "data sheet\n\nmax. output volatge \\(V_{out}=24V\\)\nmax. output current \\(I_{out}=1.5A\\)\nAC/DC power supply \\(P_{in}=36W\\)",
+    "crumbs": [
+      "Overview"
+    ]
+  }
+]

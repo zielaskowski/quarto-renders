@@ -1,0 +1,14 @@
+{
+       "theme": "flatly",
+       "toc": true,
+       "toc_location": "right",
+       "toc_depth": 10,
+       "code_fold": true,
+       "css": "../../../../css/quarto-override.css",
+       "sidebar_id": "sidebar-search",
+       "sidebar_title": "Contents",
+       "search": {
+              "location": "sidebar",
+              "type": "overlay"
+       }
+}

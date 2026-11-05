@@ -1,0 +1,26 @@
+project:
+  type: website
+  render:
+    - "power_bench.ipynb"
+
+website:
+  title: "Power bench"
+  search:
+    location: "sidebar"
+    type: "overlay"
+  sidebar:
+    id: "sidebar-search"
+    title: "Contents"
+    style: floating
+    contents:
+      - text: "Overview"
+        href: "power_bench.html"
+
+format:
+  html:
+    theme: "flatly"
+    toc: true
+    toc-location: "right"
+    toc-depth: 10
+    code-fold: true
+    css: "../../../../css/quarto-override.css"
