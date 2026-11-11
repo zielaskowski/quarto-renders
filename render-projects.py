@@ -110,7 +110,12 @@ class Project:
 
             file_rel = Path(str(item.get("file") or ""))
             file_key = file_rel.as_posix()
-            if not file_key or file_key == "." or file_rel.is_absolute() or ".." in file_rel.parts:
+            if (
+                not file_key
+                or file_key == "."
+                or file_rel.is_absolute()
+                or ".." in file_rel.parts
+            ):
                 raise ManifestError(f"page '{file_key}': invalid file path")
             if file_key in seen_files:
                 raise ManifestError(f"duplicate page file: {file_key}")
@@ -164,7 +169,12 @@ class Project:
 
             file_rel = Path(str(item.get("file") or ""))
             file_key = file_rel.as_posix()
-            if not file_key or file_key == "." or file_rel.is_absolute() or ".." in file_rel.parts:
+            if (
+                not file_key
+                or file_key == "."
+                or file_rel.is_absolute()
+                or ".." in file_rel.parts
+            ):
                 raise ManifestError(f"explore '{file_key}': invalid file path")
             if file_key in seen_files:
                 raise ManifestError(f"duplicate explore file: {file_key}")
@@ -280,7 +290,7 @@ def generate_quarto_yml(project: Project, defaults: dict[str, Any]) -> str:
         f"    type: {y(defaults['search']['type'])}",
         "  sidebar:",
         f"    id: {y(sidebar_id)}",
-        f"    title: {y(defaults.get('sidebar_title', 'Contents'))}",
+        f"    title: {y(project.name)}",
         "    style: floating",
         "    contents:",
     ]
@@ -343,7 +353,9 @@ def stage_project(project: Project, stage: Path) -> None:
     shutil.copytree(project.proj, stage, ignore=ignore)
 
 
-def write_configs(project: Project, defaults: dict[str, Any], target_proj: Path) -> None:
+def write_configs(
+    project: Project, defaults: dict[str, Any], target_proj: Path
+) -> None:
     target_proj.mkdir(parents=True, exist_ok=True)
     (target_proj / "_quarto.yml").write_text(
         generate_quarto_yml(project, defaults), encoding="utf-8"
@@ -423,7 +435,9 @@ def main(argv: list[str] | None = None) -> int:
 
     projects_root = args.projects_root.expanduser().resolve()
     repo_dir = args.repo_dir.expanduser().resolve()
-    defaults_path = (args.defaults or (repo_dir / "defaults.json")).expanduser().resolve()
+    defaults_path = (
+        (args.defaults or (repo_dir / "defaults.json")).expanduser().resolve()
+    )
 
     if not projects_root.is_dir():
         die(f"projects root is not a directory: {projects_root}")
@@ -477,13 +491,9 @@ def main(argv: list[str] | None = None) -> int:
             info(f"source: {project.proj}")
             info(f"pages: {len(project.pages)}; explore: {len(project.explore)}")
 
-            # Keep the generated config in the source tree and in the repo.
+            # Keep the generated config in the source tree
             write_configs(project, defaults, project.proj)
             project_out = repo_dir / project.slug
-            stale_proj = project_out / "proj"
-            if stale_proj.exists():
-                shutil.rmtree(stale_proj)
-            write_configs(project, defaults, project_out)
 
             stage = build_root / "stage" / project.slug
             out = build_root / "site" / project.slug
@@ -530,7 +540,6 @@ def main(argv: list[str] | None = None) -> int:
                 shutil.rmtree(site_dir)
             shutil.copytree(out, site_dir)
 
-            shutil.copy2(project_dir / "project.json", project_out / "project.json")
             explore_copied += copy_explore_payload(project, project_out)
             xml_copied += copy_xml_assets(project, site_dir)
             index.append(project.index_entry())
