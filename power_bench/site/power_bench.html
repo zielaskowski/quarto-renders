@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>power bench – Power bench</title>
+<title>power bench supply – Power Bench Supply</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -165,7 +165,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Power bench</a> 
+      <a href="./">Power Bench Supply</a> 
         <div class="sidebar-tools-main">
     <div id="quarto-search" class="quarto-navigation-tool px-1" title="Search"></div>
 </div>
@@ -192,12 +192,32 @@ window.Quarto = {
   <li><a href="#power" id="toc-power" class="nav-link active" data-scroll-target="#power">power</a></li>
   <li><a href="#modules" id="toc-modules" class="nav-link" data-scroll-target="#modules">modules</a>
   <ul>
-  <li><a href="#constant-voltage-supply" id="toc-constant-voltage-supply" class="nav-link" data-scroll-target="#constant-voltage-supply">constant voltage supply</a></li>
-  <li><a href="#constant-current-supply" id="toc-constant-current-supply" class="nav-link" data-scroll-target="#constant-current-supply">constant current supply</a></li>
-  <li><a href="#display-meter" id="toc-display-meter" class="nav-link" data-scroll-target="#display-meter">display meter</a></li>
-  <li><a href="#power-monitor" id="toc-power-monitor" class="nav-link" data-scroll-target="#power-monitor">power monitor</a></li>
+  <li><a href="#constant-voltage-supply" id="toc-constant-voltage-supply" class="nav-link" data-scroll-target="#constant-voltage-supply">constant voltage supply</a>
+  <ul>
+  <li><a href="#front-panel" id="toc-front-panel" class="nav-link" data-scroll-target="#front-panel">front panel</a></li>
+  <li><a href="#back-panel" id="toc-back-panel" class="nav-link" data-scroll-target="#back-panel">back panel</a></li>
   </ul></li>
-  <li><a href="#data-sheet" id="toc-data-sheet" class="nav-link" data-scroll-target="#data-sheet">data sheet</a></li>
+  <li><a href="#constant-current-sink" id="toc-constant-current-sink" class="nav-link" data-scroll-target="#constant-current-sink">constant current sink</a>
+  <ul>
+  <li><a href="#front-panel-1" id="toc-front-panel-1" class="nav-link" data-scroll-target="#front-panel-1">front panel</a></li>
+  <li><a href="#back-panel-1" id="toc-back-panel-1" class="nav-link" data-scroll-target="#back-panel-1">back panel</a></li>
+  </ul></li>
+  <li><a href="#display-meter" id="toc-display-meter" class="nav-link" data-scroll-target="#display-meter">display meter</a>
+  <ul>
+  <li><a href="#front-panel-2" id="toc-front-panel-2" class="nav-link" data-scroll-target="#front-panel-2">front panel</a></li>
+  <li><a href="#back-panel-2" id="toc-back-panel-2" class="nav-link" data-scroll-target="#back-panel-2">back panel</a></li>
+  </ul></li>
+  <li><a href="#power-monitor" id="toc-power-monitor" class="nav-link" data-scroll-target="#power-monitor">power monitor</a>
+  <ul>
+  <li><a href="#front-panel-3" id="toc-front-panel-3" class="nav-link" data-scroll-target="#front-panel-3">front panel</a></li>
+  <li><a href="#back-panel-3" id="toc-back-panel-3" class="nav-link" data-scroll-target="#back-panel-3">back panel</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#data-sheet" id="toc-data-sheet" class="nav-link" data-scroll-target="#data-sheet">data sheet</a>
+  <ul>
+  <li><a href="#basic-parameters" id="toc-basic-parameters" class="nav-link" data-scroll-target="#basic-parameters">basic parameters</a></li>
+  <li><a href="#sockets" id="toc-sockets" class="nav-link" data-scroll-target="#sockets">sockets</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -206,7 +226,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">power bench</h1>
+<h1 class="title">power bench supply</h1>
 </div>
 
 
@@ -223,21 +243,21 @@ window.Quarto = {
 </header>
 
 
-<p>After some time of playing with electronics you will face the need of having a power bench supply for your projects. I did. Sure, you can buy complete solution from aliexpres or sophisticated solution from Tectronix (no affilation here) if you happen to be a milionare but it is no fun! So here what I did.</p>
-<p>What we need is adjustable voltage and current control, monitor and display the setting, real current consumption…and maybe more, we will see. The motto of the project is as follow:</p>
+<p>After spending some time playing with electronics, you’ll eventually realise that you need a <strong>bench power supply</strong> for your projects. I did. Sure, you can buy a ready-made solution from AliExpress, or a sophisticated piece of equipment from Tektronix (no affiliation here), if you happen to be a millionaire. But where’s the fun in that? So, here’s what I came up with.</p>
+<p>What we need is adjustable voltage and current control, a display showing the settings and actual current consumption… and maybe more. We’ll see.</p>
+<p>The motto of this project is:</p>
 <ul>
-<li>learn methods of controlling voltage and current, some fun with display control</li>
-<li>make everythin modular as much as possible, so subcircuits should be easily adopted to other projects</li>
-<li>make it testable; each component circuit will provide as much as possible test points, preferably each theoritacal aspect should be possible to test: no testing - no learning!</li>
-<li>voltage controller, current sink, control unit and display should be a complete standalone block, so you can build stack up all parts together or only some of them</li>
-<li>the casing should be reasonably easy to assembly without specialized ‘processes’ sourced from market, but still fully usable</li>
+<li><strong>Learn</strong>: explore methods of controlling voltage and current, and have some fun experimenting with display control.</li>
+<li><strong>Modularity</strong>: make everything as modular as possible, so individual circuits can easily be reused in other projects.</li>
+<li><strong>Testability</strong>: make every component testable. Each circuit should provide as many test points as possible. Ideally, every theoretical aspect should be possible to verify experimentally. <strong>No testing, no learning!</strong></li>
+<li><strong>Independence</strong>: the voltage controller, current sink, control unit and display should each be standalone modules. This means you can stack all the modules together or use only the ones you need.</li>
+<li><strong>Practicality</strong>: the enclosure should be reasonably easy to assemble using readily available materials and without specialised manufacturing processes, while remaining fully functional.</li>
 </ul>
-<p>What is missing now: (but probably will happen some day)</p>
+<p>What is missing (but will probably happen someday)</p>
 <ul>
-<li>AC/DC converter. availability of pulse transformers is low and prices are high (just a transformer is more expensive that whole adapter!). But what makes me think that the module will become reality is super interresting physics behind this. If there only be more time…</li>
-<li>booster. The only application i can think off is charging (slowely) bigger battery packs…unleikely to happen but who knows?</li>
+<li><strong>AC/DC converter</strong>: The availability of suitable pulse transformers is limited, and prices are surprisingly high (sometimes a single transformer costs more than an entire power adapter!). However, what makes me think this module will eventually become a reality is the fascinating physics behind it. If only there were more time…</li>
 </ul>
-<div id="74cdae43-e8a1-4b48-acd1-6add75f2cc7d" class="cell" data-execution_count="1">
+<div id="74cdae43-e8a1-4b48-acd1-6add75f2cc7d" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>displayformat include_comment <span class="fu">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -245,14 +265,15 @@ window.Quarto = {
 </div>
 <section id="power" class="level2">
 <h2 class="anchored" data-anchor-id="power">power</h2>
-<p>Power is the main paramter and will be our main limiter, defining basically everything: size, cost, component selection and the extent of failure if something goes wrong. But to make the power bench usable and universal we need a lot of power.</p>
-<p>One of the potential usage scenarios is battery charging. To make it usefull lets settle down at 24V and 1.5A which is already giving 36W. This will be our starting point. Since for now AC/DC converter is not in scope, 36W allow wide range of options from market in reasonable prices.</p>
-<p>For electric scooter lovers, the best option would be to have 36V and ~2A. But this set up another level problems for AC/DC adapter, power dissipation and control module. Theroetically may be possible with aditional booster module and stronger power supply and a bit of luck…not now.</p>
-<p>Here some examples, assuming conservatively slow charging rate at 0.2 C:</p>
-<div id="8dbbb5d6-3038-4a6d-9706-e9ce38a5c314" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;jupyter&quot;,&quot;value&quot;:{&quot;source_hidden&quot;:true}}" data-execution_count="21">
+<p>Power is the main parameter and will be our primary limiting factor. It basically defines everything: size, cost, component selection and, most importantly, the extent of the damage if something goes wrong.</p>
+<p>But to make the bench supply useful and versatile, we need a reasonable amount of power.</p>
+<p>One of potential application is battery charging. To make it useful, let’s settle on 24 V and 1.5 A, giving us 36 W. This will be our starting point. Since the AC/DC converter is not part of the current scope, 36 W gives us a wide range of reasonably priced off-the-shelf options.</p>
+<p>For electric scooter enthusiasts, a more interesting option would be 36 V and approximately 2 A. However, this introduces another level of complexity for the AC/DC adapter, power dissipation and control module. Theoretically, it might be possible with an additional voltage regulator, a more powerful power supply and a bit of luck… but not this time.</p>
+<p>Here are some examples, assuming a relatively conservative charging rate of 0.2 C:</p>
+<div id="8dbbb5d6-3038-4a6d-9706-e9ce38a5c314" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standard 2.7'' cell</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode octave code-with-copy"><code class="sourceCode octave"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standard 18650 cell</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>V <span class="op">=</span> <span class="fl">3.7</span> <span class="co">#V</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> <span class="fl">3.4</span> <span class="co">#Ah</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">I</span> <span class="op">=</span> <span class="fl">0.2</span><span class="op">*</span>C <span class="co">#A</span></span>
@@ -276,7 +297,7 @@ window.Quarto = {
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>P<span class="op">=</span>V <span class="op">*</span> <span class="bu">I</span> <span class="co">#W</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code># standard 2.7'' cell</code></pre>
+<pre><code># standard 18650 cell</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <pre><code>V = 3.7000 #V</code></pre>
@@ -339,7 +360,10 @@ window.Quarto = {
 </section>
 <section id="modules" class="level2">
 <h2 class="anchored" data-anchor-id="modules">modules</h2>
-<p>The whole bench supply is to be made from independent modules. So don’t need to build all elements, you can select only the ones that makes most sense for you with possibility to add other later.</p>
+<p>The entire bench supply will consist of independent modules. You don’t need to build everything: simply choose the modules that make the most sense for your application, with the option of adding more later.</p>
+<p>All modules will share the same enclosure design, with only the internal electronics changing.</p>
+<p>Connections between modules will be standardised and based on 2 mm mini banana plugs.</p>
+<p>Since we’re dealing with relatively high power levels, every module will include thermal protection.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="img/power_bench.svg" class="img-fluid figure-img"></p>
@@ -348,26 +372,155 @@ window.Quarto = {
 </div>
 <section id="constant-voltage-supply" class="level3">
 <h3 class="anchored" data-anchor-id="constant-voltage-supply">constant voltage supply</h3>
+<p>A regulated voltage supply module. It will also provide a negative voltage output, so from this point onwards you can experiment with op-amps without needing an additional power supply.</p>
+<section id="front-panel" class="level4">
+<h4 class="anchored" data-anchor-id="front-panel">front panel</h4>
+<ul>
+<li>potentiometer to adjust the output voltage.</li>
+<li>ON / OFF button (latching tacktile switch).</li>
+<li><span class="math inline">\(V^+\)</span> -&gt; positive voltage output.</li>
+<li><span class="math inline">\(V^-\)</span> -&gt; negative voltage output. Absolute value equal to <span class="math inline">\(V^+\)</span>.</li>
+<li>ALARM -&gt; turns the module off when voltage low (connected to open-drain pin of power control).</li>
+<li>GND -&gt; ground. Not the same as back panel.</li>
+</ul>
 </section>
-<section id="constant-current-supply" class="level3">
-<h3 class="anchored" data-anchor-id="constant-current-supply">constant current supply</h3>
+<section id="back-panel" class="level4">
+<h4 class="anchored" data-anchor-id="back-panel">back panel</h4>
+<ul>
+<li><span class="math inline">\(V^+\)</span> -&gt; power supply for control circuit.</li>
+<li>GND.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/constant_voltage.png" class="img-fluid figure-img"></p>
+<figcaption>sketch</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="constant-current-sink" class="level3">
+<h3 class="anchored" data-anchor-id="constant-current-sink">constant current sink</h3>
+<p><a href="https://hi2z.com/projects?project=constant_current_sink&amp;page=constant_current_sink.html">link to page</a></p>
+<p>Using a single module to cover the entire range from 0 A to 2 A or more would require compromising between fine regulation at low currents and the risk of burning a chip at higher currents.</p>
+<p>We don’t want either.</p>
+<p>So, let’s split the range: - 1.5 A module: for rough regulation, capable of handling up to 80 W when cooled with liquid nitrogen and approximately 30 W with good fan cooling (fingers crossed!). - 0.5 A module: for fine regulation, with a lower power-handling capability.</p>
+<p>Of course, modules can be connected in parallel to achieve higher currents.</p>
+<p>Each module will include thermal protection and an alarm input to switch it off…just in case.</p>
+<section id="front-panel-1" class="level4">
+<h4 class="anchored" data-anchor-id="front-panel-1">front panel</h4>
+<ul>
+<li>potentiometer to adjust the current.</li>
+<li>ON / OFF button (latching tacktile switch).</li>
+<li><span class="math inline">\(I_{IN}\)</span> -&gt; current input. Since this is a current sink, always connect it to the low side of the load.</li>
+<li>ALARM -&gt; turns the module off when voltage low (connected to open-drain pin of power control).</li>
+<li>GND -&gt; ground. Not the same as back panel.</li>
+</ul>
+</section>
+<section id="back-panel-1" class="level4">
+<h4 class="anchored" data-anchor-id="back-panel-1">back panel</h4>
+<ul>
+<li><span class="math inline">\(V^+\)</span> -&gt; supply for control circuit, basically the op-amp reference.</li>
+<li>GND.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/current_sink.png" class="img-fluid figure-img"></p>
+<figcaption>sketch</figcaption>
+</figure>
+</div>
+</section>
 </section>
 <section id="display-meter" class="level3">
 <h3 class="anchored" data-anchor-id="display-meter">display meter</h3>
+<p>Two LED displays for voltage and current. No controls here, just a dedicated display unit.</p>
+<p>The module requires a digit selection signal for each of the eight digits, along with a segment selection signal. The display is multiplexed: the controller scans through the digits sequentially and selects the appropriate segments for each one.</p>
+<p>Control signals are provided by the <strong>power monitor</strong>.</p>
+<p>Each LED display can also operate independently, offering some additional flexibility. I’m not entirely sure what the use case would be yet, but hey, you’ve got the power!</p>
+<section id="front-panel-2" class="level4">
+<h4 class="anchored" data-anchor-id="front-panel-2">front panel</h4>
+<ul>
+<li>two 7-segment LED display.</li>
+<li>ON / OFF button.</li>
+</ul>
+</section>
+<section id="back-panel-2" class="level4">
+<h4 class="anchored" data-anchor-id="back-panel-2">back panel</h4>
+<ul>
+<li>DIG1-4 + VCC + GND — 8-pin connector; digit selection signals and common power supply.</li>
+<li>DIG5-8 + VCC + GND — 8-pin connector; digit selection signals and common power supply.</li>
+<li>SEG - 8-line signal for digit segment selection.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/display_meter.png" class="img-fluid figure-img"></p>
+<figcaption>sketch</figcaption>
+</figure>
+</div>
+</section>
 </section>
 <section id="power-monitor" class="level3">
 <h3 class="anchored" data-anchor-id="power-monitor">power monitor</h3>
+<p>Measures voltage and current on the high side of the circuit and generates the control signals for the LED displays.</p>
+<p>It also allows you to set voltage or power limits, triggering an alarm when the selected threshold is exceeded. This provides additional protection for the voltage and current modules, alongside their individual thermal protection.</p>
+<p>The measurement circuit is based on the <a href="https://www.ti.com/lit/ds/symlink/ina230.pdf?ts=1795042978322">INA230</a> chip from Texas Instruments© (alternatively, the INA226 can be used for higher measurement precision).</p>
+<section id="front-panel-3" class="level4">
+<h4 class="anchored" data-anchor-id="front-panel-3">front panel</h4>
+<ul>
+<li>ON / OFF button</li>
+<li>ALARM PWR / VOLT -&gt; buttons to select parameter used for alarm monitoring.</li>
+<li>UP / DOWN -&gt; buttons to select alarm threshold.</li>
+<li>OK -&gt; confirm the alarm settings.</li>
+<li><span class="math inline">\(BUS_{IN}\)</span> -&gt; input connection to the measured BUS line.</li>
+<li><span class="math inline">\(BUS_{OUT}\)</span> -&gt; output connction from the measured BUS line.</li>
+</ul>
+</section>
+<section id="back-panel-3" class="level4">
+<h4 class="anchored" data-anchor-id="back-panel-3">back panel</h4>
+<ul>
+<li>DIG1-4 + VCC + GND — 8-pin connector; digit selection signals and common power supply.</li>
+<li>DIG5-8 + VCC + GND — 8-pin connector; digit selection signals and common power supply.</li>
+<li>SEG - 8-line signal for digit segment selection.</li>
+<li><span class="math inline">\(V^+\)</span> -&gt; power supply for control circuit.</li>
+<li>GND -&gt; common ground for bus and power supply.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/power_monitor.png" class="img-fluid figure-img"></p>
+<figcaption>power_monitor</figcaption>
+</figure>
+</div>
+</section>
 </section>
 </section>
 <section id="data-sheet" class="level2">
 <h2 class="anchored" data-anchor-id="data-sheet">data sheet</h2>
+<section id="basic-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="basic-parameters">basic parameters</h3>
 <ul>
 <li>max. output volatge <span class="math inline">\(V_{out}=24V\)</span></li>
-<li>max. output current <span class="math inline">\(I_{out}=1.5A\)</span></li>
+<li>max. output current for one module <span class="math inline">\(I_{out}=1.5A\)</span></li>
 <li>AC/DC power supply <span class="math inline">\(P_{in}=36W\)</span></li>
+<li>alarm signal; open drain</li>
 </ul>
+</section>
+<section id="sockets" class="level3">
+<h3 class="anchored" data-anchor-id="sockets">sockets</h3>
+<ul>
+<li><strong>2mm banana sockets</strong>: for front-panel connections. Simple, readily available and inexpensive.</li>
+<li><strong>2mm banana stackable plugs</strong>; to distribute signal from one socket (e.g.&nbsp;the alarm signal).</li>
+<li><strong>1.35mm DC power connectors</strong>: for modules power supply.</li>
+<li><strong>IDC DC3 male socket, 8-pin 2.54 mm pitch connectors</strong>: for LCD</li>
+<li><strong>8-wire IDC female ribbon cables</strong>: to connect LCD display with power monitor</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/sockets.png" class="img-fluid figure-img"></p>
+<figcaption>sockets</figcaption>
+</figure>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
