@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Render every Quarto project into the public quarto-renders repository.
+see hi2z/wbpage/README.md for details
 
 Source layout:
 
@@ -37,27 +38,32 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import Any
+from typing import Any, NoReturn
 from urllib.parse import urlencode
 
 PAGE_SUFFIXES = {".ipynb", ".qmd", ".md"}
+CIRCUIT_TAG = "hi2z_circuit"
 DEFAULT_PROJECTS_ROOT = Path("/home/mi/docs/prog/hi2Z")
 DEFAULT_REPO_DIR = DEFAULT_PROJECTS_ROOT / "quarto-renders"
 
 
 def say(message: str) -> None:
+    """Print a section heading."""
     print(f"\n==> {message}", flush=True)
 
 
 def info(message: str) -> None:
+    """Print an indented detail line."""
     print(f"    {message}", flush=True)
 
 
 def warn(message: str) -> None:
+    """Print a warning to standard error."""
     print(f"WARNING: {message}", file=sys.stderr, flush=True)
 
 
-def die(message: str) -> None:
+def die(message: str) -> NoReturn:
+    """Print an error to standard error and exit with status 1."""
     print(f"ERROR: {message}", file=sys.stderr, flush=True)
     raise SystemExit(1)
 
@@ -76,10 +82,12 @@ def y(value: Any) -> str:
 
 
 def output_url(file_rel: Path) -> str:
+    """Return the rendered HTML path for a source page."""
     return file_rel.with_suffix(".html").as_posix()
 
 
 def explore_url(slug: str, notebook: Path, circuit: Path) -> str:
+    """Return the /explore URL for a notebook and circuit pair."""
     return "/explore?" + urlencode(
         {
             "project": slug,
@@ -90,7 +98,10 @@ def explore_url(slug: str, notebook: Path, circuit: Path) -> str:
 
 
 class Project:
+    """A validated project manifest and its source paths."""
+
     def __init__(self, project_dir: Path, data: dict[str, Any]) -> None:
+        """Load a project manifest from a project directory."""
         self.dir = project_dir
         self.slug = project_dir.name
         self.proj = project_dir / "proj"
@@ -99,6 +110,7 @@ class Project:
         self.explore = self._load_explore(data.get("explore"))
 
     def _load_pages(self, raw: Any) -> list[dict[str, Any]]:
+        """Validate and order the project's rendered pages."""
         if not isinstance(raw, list) or not raw:
             raise ManifestError("'pages' must be a non-empty list")
 
@@ -156,6 +168,7 @@ class Project:
         return [index_page] + [page for page in pages if page is not index_page]
 
     def _load_explore(self, raw: Any) -> list[dict[str, Any]]:
+        """Validate the project's explore notebook and circuit pairs."""
         if raw is None:
             return []
         if not isinstance(raw, list):
@@ -237,6 +250,7 @@ class Project:
         return explore
 
     def index_entry(self) -> dict[str, Any]:
+        """Return this project's entry for projects.json."""
         return {
             "slug": self.slug,
             "name": self.name,
@@ -260,6 +274,7 @@ class Project:
 
 
 def load_project(project_dir: Path) -> Project:
+    """Read and validate a project's project.json manifest."""
     manifest = project_dir / "project.json"
     try:
         data = json.loads(manifest.read_text(encoding="utf-8"))
@@ -273,6 +288,7 @@ def load_project(project_dir: Path) -> Project:
 
 
 def generate_quarto_yml(project: Project, defaults: dict[str, Any]) -> str:
+    """Build the generated _quarto.yml content for a project."""
     sidebar_id = str(defaults["sidebar_id"])
     lines: list[str] = [
         "project:",
@@ -329,10 +345,12 @@ def generate_quarto_yml(project: Project, defaults: dict[str, Any]) -> str:
 
 
 def generate_metadata_yml(defaults: dict[str, Any]) -> str:
+    """Build the generated _metadata.yml content."""
     return f"sidebar: {y(defaults['sidebar_id'])}\n"
 
 
 def find_quarto() -> str:
+    """Return the Quarto executable path."""
     quarto = shutil.which("quarto")
     if quarto:
         return quarto
@@ -340,9 +358,42 @@ def find_quarto() -> str:
     if candidates:
         return str(candidates[-1])
     die("quarto not found in PATH")
+    return "" # just to satisfy pylint, will die anyway if not returned before
+
+
+def strip_tagged_cells(notebook: Path, tag: str = CIRCUIT_TAG) -> int:
+    """Remove cells whose metadata.tags contains tag and return the count."""
+    data = json.loads(notebook.read_text(encoding="utf-8"))
+    cells = data.get("cells")
+    if not isinstance(cells, list):
+        return 0
+
+    kept: list[Any] = []
+    removed = 0
+    for cell in cells:
+        if not isinstance(cell, dict):
+            kept.append(cell)
+            continue
+        tags = (cell.get("metadata") or {}).get("tags") or []
+        if isinstance(tags, str):
+            tags = [tags]
+        if tag in tags:
+            removed += 1
+        else:
+            kept.append(cell)
+
+    if removed:
+        data["cells"] = kept
+        notebook.write_text(
+            json.dumps(data, indent=1, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        say(f"Removed cell taged '{tag}' from {notebook.name}")
+    return removed
 
 
 def stage_project(project: Project, stage: Path) -> None:
+    """Copy a project's source tree into a temporary build directory."""
     ignore = shutil.ignore_patterns(
         "_quarto.yml",
         "_metadata.yml",
@@ -352,10 +403,18 @@ def stage_project(project: Project, stage: Path) -> None:
     )
     shutil.copytree(project.proj, stage, ignore=ignore)
 
+    # Strip circuit-only cells from the Quarto build copy; source notebooks
+    # and the deployed explore payload stay unchanged.
+    explore = stage / "explore"
+    if explore.is_dir():
+        for notebook in sorted(explore.rglob("*.ipynb")):
+            strip_tagged_cells(notebook)
+
 
 def write_configs(
     project: Project, defaults: dict[str, Any], target_proj: Path
 ) -> None:
+    """Write _quarto.yml and _metadata.yml into a project directory."""
     target_proj.mkdir(parents=True, exist_ok=True)
     (target_proj / "_quarto.yml").write_text(
         generate_quarto_yml(project, defaults), encoding="utf-8"
@@ -366,6 +425,7 @@ def write_configs(
 
 
 def copy_xml_assets(project: Project, site_dir: Path) -> int:
+    """Copy XML assets from proj/img into the rendered site and return the count."""
     img_dir = project.proj / "img"
     if not img_dir.is_dir():
         return 0
@@ -382,6 +442,7 @@ def copy_xml_assets(project: Project, site_dir: Path) -> int:
 
 
 def copy_explore_payload(project: Project, project_out: Path) -> int:
+    """Copy explore notebooks and circuits into the output and return the count."""
     explore_out = project_out / "explore"
     if explore_out.exists():
         shutil.rmtree(explore_out)
@@ -406,6 +467,7 @@ def copy_explore_payload(project: Project, project_out: Path) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Render all projects and update the renders repository index."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--projects-root",
@@ -433,9 +495,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    projects_root = args.projects_root.expanduser().resolve()
-    repo_dir = args.repo_dir.expanduser().resolve()
-    defaults_path = (
+    projects_root: Path = args.projects_root.expanduser().resolve()
+    repo_dir: Path = args.repo_dir.expanduser().resolve()
+    defaults_path: Path = (
         (args.defaults or (repo_dir / "defaults.json")).expanduser().resolve()
     )
 
@@ -447,9 +509,13 @@ def main(argv: list[str] | None = None) -> int:
         die(f"renders repo is not a git checkout: {repo_dir}")
 
     try:
-        defaults = json.loads(defaults_path.read_text(encoding="utf-8"))
+        defaults: dict[str, Any] = json.loads(
+            defaults_path.read_text(encoding="utf-8")
+        )
     except (OSError, ValueError) as err:
         die(f"cannot read Quarto defaults {defaults_path}: {err}")
+    if not defaults:
+        die("empty defaults?")
 
     quarto = find_quarto()
     if args.build_dir:
@@ -499,7 +565,7 @@ def main(argv: list[str] | None = None) -> int:
             out = build_root / "site" / project.slug
             try:
                 stage_project(project, stage)
-            except OSError as err:
+            except (OSError, ValueError) as err:
                 warn(f"{project.slug}: staging failed: {err}")
                 failures += 1
                 continue
